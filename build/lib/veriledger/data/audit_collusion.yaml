@@ -1,0 +1,20 @@
+# Example 2, panel (c): audit opinions when related parties collude, with every counterparty on the ledger.
+name: Audit opinions under collusion
+experiment: audit
+seed: 2029
+replications: 30
+economy:
+  adoption: 1.0
+misstatements:
+  backdate: 0.3
+  fictitious: 0.01
+  inflate: 0.01
+  duplicate: 0.005
+  round_trip: 4
+  tamper: 0.005
+regimes: [sampling, crossledger]
+regime_params:
+  crossledger:
+    psi_backend: plain   # same matches as x25519, faster for Monte Carlo runs
+sweep:
+  misstatements.round_trip: [0, 4, 8, 12, 16, 20, 24, 32]
