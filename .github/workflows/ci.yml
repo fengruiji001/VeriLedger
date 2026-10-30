@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        include:
+          - os: windows-latest
+            python-version: "3.12"
+          - os: macos-latest
+            python-version: "3.12"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install ".[dev]"
+      - name: Fetch the official SAF-T schema for the optional tests
+        if: runner.os == 'Linux'
+        run: |
+          git init /tmp/saf-t
+          git -C /tmp/saf-t remote add origin https://github.com/Skatteetaten/saf-t.git
+          git -C /tmp/saf-t fetch --depth 1 origin 10c8fd82a6ff47e53385bc33c7638c5fde239a4f
+          git -C /tmp/saf-t checkout --detach FETCH_HEAD
+      - name: Lint and type check
+        run: |
+          ruff check src tests examples benchmarks
+          ruff format --check src tests
+          mypy
+      - name: Test
+        env:
+          VERILEDGER_SAFT_DIR: ${{ runner.os == 'Linux' && '/tmp/saf-t' || '' }}
+        run: python -m pytest --cov=veriledger --cov-report=term --cov-fail-under=90
+      - name: Demo
+        run: veriledger demo --replications 2 --out demo-output --quiet
+
+  minimum-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install minimum versions
+        run: |
+          python -m pip install --upgrade pip
+          pip install "numpy==1.24.*" "pandas==2.0.*" "matplotlib==3.7.*" "PyYAML==6.0.*" pytest
+          pip install --no-deps .
+      - name: Test
+        run: python -m pytest -q
+
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build and check
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+          twine check --strict dist/*
+      - name: Install the wheel in a clean environment
+        run: |
+          python -m venv /tmp/venv
+          /tmp/venv/bin/pip install dist/*.whl
+          cd /tmp && /tmp/venv/bin/veriledger demo --replications 1 --out demo-output --quiet
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build documentation
+        run: |
+          pip install ".[docs]"
+          mkdocs build --strict
