@@ -2,6 +2,7 @@ cff-version: 1.2.0
 message: "If you use VeriLedger, please cite it as below."
 title: "VeriLedger: An open-source Python toolkit for simulating blockchain-based accounting verification and measuring information asymmetry"
 version: 0.3.10
+doi: "10.5281/zenodo.23807620"
 date-released: 2026-10-27
 license: MIT
 authors:

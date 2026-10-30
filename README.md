@@ -1,5 +1,7 @@
 # VeriLedger
 
+[![DOI](https://zenodo.org/badge/1439693498.svg)](https://doi.org/10.5281/zenodo.23807619)
+
 **Simulate blockchain-based accounting verification and measure information asymmetry.**
 
 VeriLedger is a Python toolkit for accounting, auditing and finance research. It generates a firm's
@@ -108,7 +110,9 @@ formats, command line, validation and limitations.
 
 ## Citation
 
-See `CITATION.cff` for the software citation metadata.
+Version 0.3.10 DOI: [10.5281/zenodo.23807620](https://doi.org/10.5281/zenodo.23807620).
+
+See `CITATION.cff` for the software citation metadata. The DOI badge above follows the Zenodo badge link provided for this repository.
 
 ## Authors
 
