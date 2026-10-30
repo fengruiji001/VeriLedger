@@ -1,1 +1,15 @@
-
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+site/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+example-output/
+veriledger-output/
+veriledger-demo/
+veriledger-economy/
