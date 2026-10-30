@@ -1,0 +1,7 @@
+include README.md README_中文.md LICENSE CITATION.cff CONTRIBUTING.md mkdocs.yml
+recursive-include tests *.py
+recursive-include docs *.md *.py *.png *.pdf
+recursive-include examples *.py
+recursive-include benchmarks *.py
+recursive-include tools *.py
+recursive-include .github *.md *.yml

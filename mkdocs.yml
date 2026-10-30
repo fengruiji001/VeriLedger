@@ -1,0 +1,14 @@
+site_name: VeriLedger
+site_description: Simulate blockchain-based accounting verification and measure information asymmetry
+theme:
+  name: readthedocs
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Concepts and formulas: concepts.md
+  - Scenario files: scenarios.md
+  - File formats: formats.md
+  - Command line: cli.md
+  - Python API: api.md
+  - Validation: validation.md
+  - Limitations: limitations.md

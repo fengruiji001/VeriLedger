@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "veriledger"
+dynamic = ["version"]
+description = "Simulate blockchain-based accounting verification and measure information asymmetry"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Shaoni Zhou", email = "snzhou@bjtu.edu.cn" },
+    { name = "Ruiji Feng", email = "25120591@bjtu.edu.cn" },
+]
+keywords = [
+    "blockchain", "distributed ledger", "accounting", "auditing", "information asymmetry",
+    "financial reporting", "private set intersection", "Merkle tree", "SAF-T", "simulation",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial :: Accounting",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "matplotlib>=3.7",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+crypto = ["cryptography>=41"]
+docs = ["mkdocs>=1.5,<2"]
+dev = ["pytest>=7", "pytest-cov>=4", "ruff>=0.4", "mypy>=1.8", "lxml>=4.9", "cryptography>=41"]
+
+[project.scripts]
+veriledger = "veriledger.cli:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "veriledger.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+veriledger = ["py.typed", "data/*.yaml"]
+
+[tool.mypy]
+files = ["src/veriledger"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501", "B008", "B905", "UP007", "UP045"]
